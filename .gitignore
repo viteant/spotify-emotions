@@ -1,0 +1,6 @@
+bootstrap
+keyword_norm_suggested.json
+tracks_with_normalized_keywords.csv
+.cache-spotify
+.venv
+.idea
