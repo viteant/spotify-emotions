@@ -2,7 +2,13 @@ import extract_keywords.keywords as kwUtils
 import libraries.db as db
 import extract_keywords.LLM as LLM
 
-def extract_from_lyrics():
+if __name__ == "__main__":
+    '''
+    Vamos a seguir los siguientes pasos:
+    1. Vamos a obtener los keywords de todas nuestros tracks y enviarlos a un LLM para obtener los keywords
+    2. Guardamos los datos dentro de la base de datos.
+    '''
+
     conn = db.create_connection()
     lyrics = db.get_lyrics(conn)
 

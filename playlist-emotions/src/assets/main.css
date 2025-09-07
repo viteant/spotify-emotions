@@ -13,6 +13,13 @@
     -webkit-backdrop-filter: blur(5px) !important;
     border: 1px solid rgba(65, 254, 54, 0.3) !important;
   }
+
+  .bh-pagination{
+    @apply px-5 bg-white;
+  }
+  .bh-table-responsive{
+    @apply bg-white/90;
+  }
 }
 
 

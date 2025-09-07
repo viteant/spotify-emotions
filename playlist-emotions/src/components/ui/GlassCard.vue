@@ -2,20 +2,16 @@
 <template>
   <div
     class="relative rounded-2xl border-2 border-emerald-400/80
-           p-6 bg-transparent glass"
+           p-6 bg-transparent glass h-full"
     :class="hover ? 'transition-transform duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_20px_2px_rgba(16,185,129,0.6)]' : ''"
     v-bind="$attrs"
   >
 
-    <div class="relative flex items-start gap-4">
-      <slot name="icon" />
+    <div class="relative flex flex-col items-center gap-4">
       <div class="w-full">
-        <h3 v-if="title" class="text-emerald-300 text-lg font-semibold tracking-tight text-center w-full mb-5">
+        <h3 v-if="title" class="text-emerald-300 text-lg font-semibold tracking-tight text-center w-full">
           {{ title }}
         </h3>
-        <p v-if="subtitle" class="text-emerald-200/70 text-sm mt-1">
-          {{ subtitle }}
-        </p>
       </div>
       <div class="ml-auto">
         <slot name="actions" />
