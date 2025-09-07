@@ -12,3 +12,7 @@ keyword_norm_suggested.json
 **/.ipynb_checkpoints/*
 .ipynb_checkpoints/*
 .ipynb_checkpoints
+
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
