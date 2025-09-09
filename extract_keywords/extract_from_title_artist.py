@@ -11,9 +11,9 @@ import extract_keywords.LLM as LLM
         print("Next...")
 '''
 
-def extract_keywords_from_title_artist():
+def extract_keywords_from_title_artist(limit=1000, message_callback=None):
     conn = db.create_connection()
-    songs = db.get_tracks_missing_lyrics(conn, 1000, 0)
+    songs = db.get_tracks_missing_lyrics(conn, limit, 0)
     i = 1
     total = len(songs)
     for song in songs:
@@ -23,6 +23,8 @@ def extract_keywords_from_title_artist():
             song["artist_name"]
         )
         print(f"Processing {artist}-{title} - {i}/{total}")
+        if message_callback:
+            message_callback(f"Processing {artist}-{title} - {i}/{total}")
         keywords = LLM.llm_keywords_from_title_artist(artist, title, 20)
         print(keywords)
         db.save_keywords(conn, {track_id: keywords})

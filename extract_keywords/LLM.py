@@ -3,19 +3,25 @@ import os, json, re
 from dotenv import load_dotenv
 from openai import OpenAI
 
-load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+def get_client():
+    load_dotenv()
+    API_KEY = os.getenv("OPENAI_API_KEY")
+    return OpenAI(api_key=API_KEY)
 
 def llm_keywords_en_simple(lyric: str, n: int = 10, model: str = "gpt-4.1-mini") -> list[str]:
     """
     Envía el lyric a la LLM y devuelve EXACTAMENTE n keywords en inglés (1–3 palabras).
     Sin structured outputs: parseo robusto de JSON devuelto por el modelo.
     """
+
     if not lyric or not lyric.strip():
         return []
 
+    client = get_client()
+
     prompt = (
-        f"You are a keyword extractor. Return EXACTLY {n+5} keywords in English "
+        f"You are a keyword extractor. Return EXACTLY {n + 5} keywords in English "
         "as a JSON array of strings. "
         "If the text is not in English, translate the keyword terms to English before returning. "
         "Be concise (1–3 words per keyword). Avoid stopwords, pronouns, near-duplicates, "
@@ -69,10 +75,10 @@ def llm_keywords_en_simple(lyric: str, n: int = 10, model: str = "gpt-4.1-mini")
 
 
 def llm_keywords_from_title_artist(
-    artist: str,
-    title: str,
-    n: int = 10,
-    model: str = "gpt-4.1-mini"
+        artist: str,
+        title: str,
+        n: int = 10,
+        model: str = "gpt-4.1-mini"
 ) -> list[str]:
     """
     Devuelve EXACTAMENTE n+5 keywords en inglés basadas en (artist, title).
@@ -82,11 +88,12 @@ def llm_keywords_from_title_artist(
     - 1–3 palabras por keyword, sin duplicados cercanos.
     """
     artist = (artist or "").strip()
-    title  = (title or "").strip()
+    title = (title or "").strip()
     if not artist and not title:
         return []
 
     total = n + 5
+    client = get_client()
 
     prompt = (
         f"You are a keyword extractor. Using only the song metadata below "

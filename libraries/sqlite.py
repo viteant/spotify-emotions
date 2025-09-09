@@ -898,6 +898,19 @@ def fetch_all_tracks_with_clusters() -> List[Dict[str, Any]]:
         except:
             pass
 
+def fetch_clusters() -> List[Dict[str, str]]:
+    """
+    Return all clusters as a list of dicts with id, name, description.
+    """
+    conn = create_connection()
+    conn.row_factory = sqlite3.Row
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT id, name, description FROM clusters ORDER BY id")
+        return [dict(row) for row in cur.fetchall()]
+    finally:
+        conn.close()
+
 
 
 
@@ -1206,3 +1219,69 @@ def fetch_tracks_with_buckets_paginated(
     rows = [dict(r) for r in cur.fetchall()]
     cur.close()
     return rows, total
+
+def _column_exists(conn: sqlite3.Connection, table: str, column: str) -> bool:
+    """
+    Return True if 'column' exists in 'table' (SQLite).
+    """
+    rows = conn.execute(f"PRAGMA table_info('{table}');").fetchall()
+    # row_factory suele ser sqlite3.Row en tu create_connection()
+    for r in rows:
+        name = r["name"] if isinstance(r, sqlite3.Row) else r[1]
+        if str(name).strip().lower() == column.strip().lower():
+            return True
+    return False
+
+
+def has_null_keywords(conn: sqlite3.Connection | None = None) -> bool:
+    """
+    True si existe al menos un registro en Tracks con keywords IS NULL.
+    """
+    own = False
+    if conn is None:
+        conn = create_connection()
+        own = True
+    try:
+        row = conn.execute("SELECT 1 FROM Tracks WHERE keywords IS NULL LIMIT 1;").fetchone()
+        return row is not None
+    finally:
+        if own:
+            try: conn.close()
+            except: pass
+
+
+def has_null_emotions(conn: sqlite3.Connection | None = None) -> bool:
+    """
+    True si existe al menos un registro en Tracks con emotions IS NULL.
+    """
+    own = False
+    if conn is None:
+        conn = create_connection()
+        own = True
+    try:
+        row = conn.execute("SELECT 1 FROM Tracks WHERE emotions IS NULL LIMIT 1;").fetchone()
+        return row is not None
+    finally:
+        if own:
+            try: conn.close()
+            except: pass
+
+
+def has_null_cluster_id(conn: sqlite3.Connection | None = None) -> bool:
+    """
+    True si existe al menos un registro en Tracks con cluster_id IS NULL.
+    Si la columna 'cluster_id' no existe, devuelve False (no hay nulos que revisar).
+    """
+    own = False
+    if conn is None:
+        conn = create_connection()
+        own = True
+    try:
+        if not _column_exists(conn, "Tracks", "cluster_id"):
+            return False  # la columna aún no ha sido creada en este esquema
+        row = conn.execute("SELECT 1 FROM Tracks WHERE cluster_id IS NULL LIMIT 1;").fetchone()
+        return row is not None
+    finally:
+        if own:
+            try: conn.close()
+            except: pass

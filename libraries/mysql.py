@@ -787,6 +787,18 @@ def fetch_all_tracks_with_clusters() -> List[Dict[str, Any]]:
 
     return rows
 
+def fetch_clusters() -> List[Dict[str, str]]:
+    """
+    Return all clusters as a list of dicts with id, name, description.
+    """
+    conn = create_connection()
+    try:
+        cur = conn.cursor(dictionary=True)  # Dict-style rows
+        cur.execute("SELECT id, name, description FROM clusters ORDER BY id")
+        return cur.fetchall()
+    finally:
+        conn.close()
+
 
 # ---------- 2) All tracks for a given cluster (with artist and album names) ----------
 

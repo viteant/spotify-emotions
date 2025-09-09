@@ -3,7 +3,7 @@ import { useRoute } from 'vue-router'
 const $route = useRoute()
 const routes = [
   { src: '/', title: 'Emotions' },
-  { src: '/playlist', title: 'Suggested Playlists' },
+  { src: '/suggested-playlists', title: 'Suggested Playlists' },
 ]
 </script>
 

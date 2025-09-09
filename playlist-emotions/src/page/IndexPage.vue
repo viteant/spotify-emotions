@@ -9,7 +9,6 @@ import ChartNormalizeEmotions from '@/components/ChartNormalizeEmotions.vue'
 import GlassCard from '@/components/ui/GlassCard.vue'
 import EmotionsDetails from '@/components/EmotionsDetails.vue'
 import EmotionsTable from '@/components/EmotionsTable.vue'
-import type { Emotion } from '@/types/TracksEmotions.ts'
 
 const api = import.meta.env.VITE_API_URL
 const playlistNormalizeEmotions = ref<NormalizeEmotion[]>([])
