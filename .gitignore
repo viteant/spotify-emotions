@@ -4,7 +4,7 @@ tracks_with_normalized_keywords.csv
 .cache-spotify
 */.env
 .idea
-app.db
+data/app.db
 tracks_with_normalized_keywords.csv
 keyword_norm_suggested.json
 .env
